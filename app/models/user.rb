@@ -13,4 +13,5 @@ class User < ApplicationRecord
     primary_key: :id
   )
 
+  validates :username, presence: true, uniqueness: true
 end

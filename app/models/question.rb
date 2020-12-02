@@ -12,4 +12,6 @@ class Question < ApplicationRecord
     foreign_key: :poll_id,
     primary_key: :id
   )
+
+  validates :text, presence: true
 end

@@ -12,4 +12,6 @@ class AnswerChoice < ApplicationRecord
     foreign_key: :answer_choice_id,
     primary_key: :id
   )
+
+  validates :text, presence: true
 end

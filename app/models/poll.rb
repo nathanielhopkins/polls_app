@@ -13,4 +13,5 @@ class Poll < ApplicationRecord
     primary_key: :id
   )
 
+  validates :title, presence: true
 end
