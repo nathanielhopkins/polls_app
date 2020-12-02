@@ -12,4 +12,8 @@ class Response < ApplicationRecord
     foreign_key: :user_id,
     primary_key: :id
   )
+
+  def sibling_reponse
+
+  end
 end
