@@ -41,4 +41,34 @@ class User < ApplicationRecord
         polls.id
     SQL
   end
+
+  def completed_polls
+    polls_with_completion_counts
+      .having('COUNT(DISTINCT questions.id) = COUNT(responses.id)')
+  end
+
+  def incomplete_polls
+    polls_with_completion_counts
+      .having('COUNT(DISTINCT questions.id) != COUNT(responses.id)')
+  end
+
+  private
+
+  def polls_with_completion_counts
+    joins_sql = <<-SQL
+    LEFT OUTER JOIN(  
+      SELECT
+        *
+      FROM
+        responses
+      WHERE
+        user_id = #{self.id}
+    ) AS responses ON responses.answer_choice_id = answer_choices.id  
+    SQL
+
+    Poll
+      .joins(questions: :answer_choices)
+      .joins(joins_sql)
+      .group('polls.id')
+  end
 end
