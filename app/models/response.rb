@@ -13,6 +13,12 @@ class Response < ApplicationRecord
     primary_key: :id
   )
 
+  has_one(
+    :question,
+    through: :answer_choice,
+    source: :question
+  )
+  
   def sibling_reponse
 
   end
