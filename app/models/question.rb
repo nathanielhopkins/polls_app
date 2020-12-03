@@ -22,11 +22,11 @@ class Question < ApplicationRecord
   validates :text, presence: true
 
   def results
-    results = {}
-    answer_choices = self.answer_choices.includes(:responses)
-    answer_choices.each do |answer|
-      results[answer.text] = answer.responses.length
-    end
-    results
+    self
+      .answer_choices
+      .left_outer_joins(:responses)
+      .group(:id)
+      .pluck('answer_choices.text, COUNT(responses.id)')
+      .to_h
   end
 end
