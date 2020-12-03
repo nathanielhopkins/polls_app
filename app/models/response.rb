@@ -31,4 +31,13 @@ class Response < ApplicationRecord
   end
 
   validate :respondent_already_answered?
+
+  def own_poll?
+    author_id = self.question.poll.author_id
+    if self.user_id == author_id
+      errors[:user_id] << 'Cannot answer your own poll'
+    end
+  end
+
+  validate :own_poll?
 end
