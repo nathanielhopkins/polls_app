@@ -25,6 +25,10 @@ class Response < ApplicationRecord
   end
 
   def respondent_already_answered?
-    self.sibling_responses.where(user_id: self.user_id).exists?
+    if self.sibling_responses.where(user_id: self.user_id).exists?
+      errors[:user_id] << 'User has already answered this question.'
+    end
   end
+
+  validate :respondent_already_answered?
 end
