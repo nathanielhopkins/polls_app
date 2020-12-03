@@ -27,6 +27,8 @@ class Response < ApplicationRecord
   def respondent_already_answered?
     if self.sibling_responses.where(user_id: self.user_id).exists?
       errors[:user_id] << 'User has already answered this question.'
+    else
+      return true
     end
   end
 
@@ -36,6 +38,8 @@ class Response < ApplicationRecord
     author_id = self.question.poll.author_id
     if self.user_id == author_id
       errors[:user_id] << 'Cannot answer your own poll'
+    else
+      return true
     end
   end
 
