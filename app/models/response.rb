@@ -23,4 +23,8 @@ class Response < ApplicationRecord
     question = self.question
     question.responses.where.not(id: self.id)
   end
+
+  def respondent_already_answered?
+    self.sibling_responses.where(user_id: self.user_id).exists?
+  end
 end
