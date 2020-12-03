@@ -35,6 +35,7 @@ class Response < ApplicationRecord
   validate :respondent_already_answered?
 
   def own_poll?
+    #completes with two queries
     author_id = self.question.poll.author_id
     if self.user_id == author_id
       errors[:user_id] << 'Cannot answer your own poll'
@@ -43,5 +44,19 @@ class Response < ApplicationRecord
     end
   end
 
-  validate :own_poll?
+  def better_own_poll?
+    #completes with one qeuery
+    author_id = Poll
+      .joins(:questions)
+      .where("questions.id = #{self.question_id}")
+      .pluck(:author_id)
+
+    if [self.user_id] == author_id
+       errors[:user_id] << 'Cannot answer your own poll'
+    else
+      return true
+    end  
+  end
+
+  validate :better_own_poll?
 end
