@@ -1,6 +1,6 @@
 class Question < ApplicationRecord
   has_many(
-    :answer_choices,
+    :answer_choices, dependent: :destroy
     class_name: 'AnswerChoice',
     foreign_key: :question_id,
     primary_key: :id

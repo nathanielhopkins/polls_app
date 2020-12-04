@@ -7,7 +7,7 @@ class AnswerChoice < ApplicationRecord
   )
 
   has_many(
-    :responses,
+    :responses, dependent: :destroy
     class_name: 'Response',
     foreign_key: :answer_choice_id,
     primary_key: :id
